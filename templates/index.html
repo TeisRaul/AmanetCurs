@@ -29,10 +29,54 @@
                 </tr>
             </thead>
             <tbody>
-                {% for item in cursuri %}
+                {% for item in date_prima %}
                 <tr>
                     <td><strong>{{ item.name }}</strong></td>
                     <td>{{ item.description }}</td>
+                    <td class="buy">{{ item.buy }}</td>
+                    <td class="sell">{{ item.sell }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+        <div class="card">
+        <h2>📍 Curs Live: Euroamanet</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Valută</th>
+                    <th>Cumpărare (Amanet)</th>
+                    <th>Vânzare (Amanet)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in date_euro %}
+                <tr>
+                    <td><strong>{{ item.name }}</strong></td>
+                    <td class="buy">{{ item.buy }}</td>
+                    <td class="sell">{{ item.sell }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <h2>📍 Curs Live: Banca Transilvania</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Valută</th>
+                    <th>Cumpărare (BT)</th>
+                    <th>Vânzare (BT)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in date_bt %}
+                <tr>
+                    <td><strong>{{ item.name }}</strong></td>
                     <td class="buy">{{ item.buy }}</td>
                     <td class="sell">{{ item.sell }}</td>
                 </tr>
