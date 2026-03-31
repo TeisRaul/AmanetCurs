@@ -2,88 +2,150 @@
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oradea Exchange App</title>
     <style>
-        body { font-family: sans-serif; background: #f4f7f6; padding: 20px; }
-        .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
-        th { background: #004e92; color: white; }
+        body { 
+            font-family: sans-serif; 
+            background: #f4f7f6; 
+            padding: 20px; 
+            margin: 0;
+        }
+        
+        .card { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+            margin-bottom: 20px; 
+            overflow-x: auto; /* Permite scroll orizontal doar pe tabel dacă ecranul e prea mic */
+        }
+        
+        /* Containerul care va ține cele 3 tabele pe un singur rând */
+        .tables-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* Împarte spațiul în 3 coloane egale */
+            gap: 20px; /* Spațiu între cele 3 cartonașe */
+        }
+        
+        /* Modificăm puțin h2-ul din carduri ca să arate mai bine înghesuit */
+        .card h2 {
+            font-size: 1.2rem;
+            margin-top: 0;
+            text-align: center;
+        }
+
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 10px; 
+            font-size: 0.9rem; /* Micșorăm puțin fontul ca să încapă mai bine */
+        }
+        
+        th, td { 
+            padding: 10px 8px; 
+            text-align: center; /* Centrăm textul pentru a salva spațiu */
+            border-bottom: 1px solid #eee; 
+        }
+        
+        /* Valuta o lăsăm aliniată la stânga */
+        td:first-child, th:first-child {
+            text-align: left;
+        }
+
+        th { 
+            background: #004e92; 
+            color: white; 
+        }
+        
         .buy { color: green; font-weight: bold; }
         .sell { color: red; font-weight: bold; }
         select { padding: 8px; border-radius: 5px; }
+
+        /* REGULA PENTRU TELEFOANE: dacă ecranul e mai mic de 1100px, pune tabelele unul sub altul */
+        @media (max-width: 1100px) {
+            .tables-container {
+                grid-template-columns: 1fr; /* Revine la 1 singură coloană */
+            }
+        }
     </style>
 </head>
 <body>
 
-    <!-- TABELUL CU DATE DIN PYTHON -->
-    <div class="card">
-        <h2>📍 Curs Live: Prima Exchange Oradea</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Valută</th>
-                    <th>Descriere</th>
-                    <th>Cumpărare (Amanet)</th>
-                    <th>Vânzare (Amanet)</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in date_prima %}
-                <tr>
-                    <td><strong>{{ item.name }}</strong></td>
-                    <td>{{ item.description }}</td>
-                    <td class="buy">{{ item.buy }}</td>
-                    <td class="sell">{{ item.sell }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
+    <!-- CONTAINERUL PENTRU TABELE (le ține pe orizontală) -->
+    <div class="tables-container">
+        
+        <!-- Tabel Prima Exchange -->
         <div class="card">
-        <h2>📍 Curs Live: Euroamanet</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Valută</th>
-                    <th>Cumpărare (Amanet)</th>
-                    <th>Vânzare (Amanet)</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in date_euro %}
-                <tr>
-                    <td><strong>{{ item.name }}</strong></td>
-                    <td class="buy">{{ item.buy }}</td>
-                    <td class="sell">{{ item.sell }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+            <h2>📍 Prima Exchange</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Valută</th>
+                        <th>Cumpărare</th>
+                        <th>Vânzare</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in date_prima %}
+                    <tr>
+                        <!-- Am scos descrierea ca să avem loc pe ecran -->
+                        <td><strong>{{ item.name }}</strong></td>
+                        <td class="buy">{{ item.buy }}</td>
+                        <td class="sell">{{ item.sell }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
-    <div class="card">
-        <h2>📍 Curs Live: Banca Transilvania</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Valută</th>
-                    <th>Cumpărare (BT)</th>
-                    <th>Vânzare (BT)</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in date_bt %}
-                <tr>
-                    <td><strong>{{ item.name }}</strong></td>
-                    <td class="buy">{{ item.buy }}</td>
-                    <td class="sell">{{ item.sell }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+        <!-- Tabel Euroamanet -->
+        <div class="card">
+            <h2>📍 Euroamanet</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Valută</th>
+                        <th>Cumpărare</th>
+                        <th>Vânzare</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in date_euro %}
+                    <tr>
+                        <td><strong>{{ item.name }}</strong></td>
+                        <td class="buy">{{ item.buy }}</td>
+                        <td class="sell">{{ item.sell }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Tabel Banca Transilvania -->
+        <div class="card">
+            <h2>📍 Banca Transilvania</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Valută</th>
+                        <th>Cumpărare</th>
+                        <th>Vânzare</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in date_bt %}
+                    <tr>
+                        <td><strong>{{ item.name }}</strong></td>
+                        <td class="buy">{{ item.buy }}</td>
+                        <td class="sell">{{ item.sell }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+    </div> <!-- Sfârșit tables-container -->
 
     <!-- GRAFICELE LIVE -->
     <div class="card">
